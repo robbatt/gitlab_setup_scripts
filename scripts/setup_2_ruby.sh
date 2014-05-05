@@ -52,14 +52,26 @@ else
 	sudo apt-get purge -y ruby1.*
 	sudo apt-get purge -y ruby2.*
 
-	rm -rf /tmp/ruby-$RUBY_TARGET_VERSION*
+	# Download (again) ruby sources
 	cd /tmp
-	wget "ftp://ftp.ruby-lang.org/pub/ruby/$RUBY_TARGET_VERSION_MAJOR_MINOR/ruby-$RUBY_TARGET_VERSION.tar.gz"
-	tar xzf ruby-$RUBY_TARGET_VERSION.tar.gz
-	cd ruby-$RUBY_TARGET_VERSION
-	./configure --disable-install-rdoc
-	make
-	sudo make install
+	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION.tar.gz ]] ; then 
+		wget "ftp://ftp.ruby-lang.org/pub/ruby/$RUBY_TARGET_VERSION_MAJOR_MINOR/ruby-$RUBY_TARGET_VERSION.tar.gz"
+	fi
+
+	# Unzip archive
+	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION ]] ; then 
+		tar xzf ruby-$RUBY_TARGET_VERSION.tar.gz
+	fi
+
+	# Build and install Ruby
+	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION/build_successful ]] ; then 
+		rmdir -f /tmp/ruby-$RUBY_TARGET_VERSION
+		cd ruby-$RUBY_TARGET_VERSION
+		./configure --disable-install-rdoc
+		make
+		sudo make install
+		sudo touch /tmp/ruby-$RUBY_TARGET_VERSION/build_successful
+	fi
 
 	echo "ruby $RUBY_TARGET_VERSION successfully installed"
 	sudo gem install bundler --no-ri --no-rdoc

@@ -7,5 +7,8 @@ echo "###### 3. Setup users                             ######"
 echo "########################################################"
 echo
 
-sudo adduser --disabled-login --gecos 'GitLab' git
+if [ -z "$(getent passwd git)" ]; then
+	sudo adduser --disabled-login --gecos 'GitLab' git
+fi
+
 

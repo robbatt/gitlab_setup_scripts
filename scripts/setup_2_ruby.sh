@@ -9,11 +9,11 @@ echo "########################################################"
 echo
 
 
-if [[ ! -n $RUBY_TARGET_VERSION ]] ; then
+if [[ -n $RUBY_TARGET_VERSION ]] ; then
+	echo "ruby target version is $RUBY_TARGET_VERSION"
+else
 	RUBY_TARGET_VERSION="2.1.1"
 	echo "default ruby target version to $RUBY_TARGET_VERSION"	
-else
-	echo "ruby target version is $RUBY_TARGET_VERSION"
 fi
 
 RUBY_TARGET_VERSION_MAJOR_MINOR=${RUBY_TARGET_VERSION:0:3}

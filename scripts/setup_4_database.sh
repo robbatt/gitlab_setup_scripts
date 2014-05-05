@@ -8,14 +8,12 @@ echo "########################################################"
 echo
 
 # Install the database packages
-if [[ -z "$GITLAB_DB_ROOT_PASS" ]] ; then
+if [[ -n "$GITLAB_DB_ROOT_PASS" ]] ; then
 	sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $GITLAB_DB_ROOT_PASS"
 	sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $GITLAB_DB_ROOT_PASS"
 	
 	sudo DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-client libmysqlclient-dev expect
-	
-	else
-	
+else
 	sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev expect
 fi
 

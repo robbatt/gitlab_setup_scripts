@@ -7,11 +7,11 @@ echo "###### 5. GitLab                                  ######"
 echo "########################################################"
 echo
 
-if [[ ! -n $GITLAB_BRANCH ]] ; then
+if [[ -n $GITLAB_BRANCH ]] ; then
+	echo "gitlab branch $GITLAB_BRANCH used"
+else
 	$GITLAB_BRANCH="6-8-stable"
 	echo "default gitlab branch to $GITLAB_BRANCH"	
-else
-	echo "gitlab branch $GITLAB_BRANCH used"
 fi
 
 # We'll install GitLab into home directory of the user "git"
@@ -146,11 +146,11 @@ sudo -u git -H bundle exec rake gitlab:setup RAILS_ENV=production
 
 ######### Install Gitlab Shell
 
-if [[ ! -n $GITLAB_SHELL_TARGET_VERSION ]] ; then
+if [[ -n $GITLAB_SHELL_TARGET_VERSION ]] ; then
+	echo "gitlab shell target version is $GITLAB_SHELL_TARGET_VERSION"
+else
 	GITLAB_SHELL_TARGET_VERSION="1.9.3"
 	echo "default gitlab shell target version to $GITLAB_SHELL_TARGET_VERSION"	
-else
-	echo "gitlab shell target version is $GITLAB_SHELL_TARGET_VERSION"
 fi
 
 # Go to home directory

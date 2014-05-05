@@ -18,7 +18,15 @@ fi
 cd /home/git
 
 # Clone GitLab repository
-sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b $GITLAB_BRANCH gitlab
+if [[ -e gitlab ]] ; then
+	echo "gitlab already cloned, wiping changes, reseting to HEAD,"
+	echo "checking out latest commit of branch $GITLAB_BRANCH"
+	sudo -u git -H git reset --hard HEAD
+	sudo -u git -H git pull
+	sudo -u git -H git checkout $GITLAB_BRANCH
+else
+	sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b $GITLAB_BRANCH gitlab
+fi
 
 # Go to gitlab dir
 cd /home/git/gitlab

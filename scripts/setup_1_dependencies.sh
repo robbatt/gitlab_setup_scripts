@@ -7,6 +7,7 @@ echo "###### 1. Setup dependencies                      ######"
 echo "########################################################"
 echo
 
+sudo dpkg --configure -a
 sudo apt-get -y update
 sudo apt-get -y upgrade
 

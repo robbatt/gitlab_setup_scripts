@@ -51,11 +51,13 @@ else
 	# Download (again) ruby sources
 	cd /tmp
 	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION.tar.gz ]] ; then 
+		echo "downloading sources"
 		wget "ftp://ftp.ruby-lang.org/pub/ruby/$RUBY_TARGET_VERSION_MAJOR_MINOR/ruby-$RUBY_TARGET_VERSION.tar.gz"
 	fi
 
 	# Unzip archive
 	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION ]] ; then 
+		echo "unpacking source archive"
 		tar xzf ruby-$RUBY_TARGET_VERSION.tar.gz
 	fi
 
@@ -81,5 +83,4 @@ fi
 
 echo "`ruby --version`"
 whereis ruby
-
 

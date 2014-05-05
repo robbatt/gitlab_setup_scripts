@@ -18,9 +18,10 @@ fi
 cd /home/git
 
 # Clone GitLab repository
-if [[ -e gitlab ]] ; then
+if [[ -e "gitlab" ]] ; then
 	echo "gitlab already cloned, wiping changes, reseting to HEAD,"
 	echo "checking out latest commit of branch $GITLAB_BRANCH"
+	cd gitlab
 	sudo -u git -H git reset --hard HEAD
 	sudo -u git -H git pull
 	sudo -u git -H git checkout $GITLAB_BRANCH
@@ -64,7 +65,7 @@ sudo chmod -R u+rwX log/
 sudo chmod -R u+rwX tmp/
 
 # Create directory for satellites
-sudo -u git -H mkdir /home/git/gitlab-satellites
+sudo -u git -H mkdir -p /home/git/gitlab-satellites
 sudo chmod u+rwx,g+rx,o-rwx /home/git/gitlab-satellites
 
 # Make sure GitLab can write to the tmp/pids/ and tmp/sockets/ directories

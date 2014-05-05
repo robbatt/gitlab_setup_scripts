@@ -48,10 +48,6 @@ if [[ $RUBY_VERSION_COMPARE == 0 ]] || [[ $RUBY_VERSION_COMPARE == 1 ]] ; then
 else
 	echo "installing ruby $RUBY_TARGET_VERSION from source [INFO]"
 
-	# Remove packaged ruby
-	sudo apt-get purge -y ruby1.*
-	sudo apt-get purge -y ruby2.*
-
 	# Download (again) ruby sources
 	cd /tmp
 	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION.tar.gz ]] ; then 
@@ -65,6 +61,11 @@ else
 
 	# Build and install Ruby
 	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION/build_successful ]] ; then 
+
+		# Remove packaged ruby
+		sudo apt-get purge -y ruby1.*
+		sudo apt-get purge -y ruby2.*
+
 		rmdir -f /tmp/ruby-$RUBY_TARGET_VERSION
 		cd ruby-$RUBY_TARGET_VERSION
 		./configure --disable-install-rdoc

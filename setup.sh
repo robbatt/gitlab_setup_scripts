@@ -47,14 +47,14 @@ echo " - it installs git $GIT_TARGET_VERSION (unless 1.8.5.2 or bigger is instal
 echo " - it installs ruby $RUBY_TARGET_VERSION"
 echo " - it installs gitlab branch $GITLAB_BRANCH"
 echo 
-echo "hit (w) to wipe everything and do a fresh install"
+echo "hit (y) to continue"
 #echo "hit (b) to run a backup before"
 
 if [[ ! -n $1 ]] ; then
 	
 	read permission
 
-	if [[ ! "$permission" =~ "w" ]] ; then
+	if [[ ! "$permission" =~ "y" ]] ; then
 		echo "ABORTED BY USER"
 		exit 1
 	fi

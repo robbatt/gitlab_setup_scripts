@@ -157,7 +157,7 @@ production: &base
     #   Format: RFC 4515
     #   Ex. (employeeType=developer)
     #
-    user_filter: '(&(sAMAccountName=%{username})(memberOf=CN=GITLABUSERS,CN=Users,DC=MYDOMAIN,DC=ORG))'
+    filter: '(memberOf=CN=GITLABUSERS,CN=Users,DC=MYDOMAIN,DC=ORG)'
 
 
   ## OmniAuth settings

@@ -9,11 +9,12 @@ echo "###### 2. Setup ruby                              ######"
 echo "########################################################"
 echo
 
+RUBY_MIN_VERSION="2.1.1"
 
 if [[ -n $RUBY_TARGET_VERSION ]] ; then
 	echo "ruby target version is $RUBY_TARGET_VERSION"
 else
-	RUBY_TARGET_VERSION="2.1.1"
+	RUBY_TARGET_VERSION=$RUBY_MIN_VERSION
 	echo "default ruby target version to $RUBY_TARGET_VERSION"	
 fi
 
@@ -22,7 +23,7 @@ RUBY_TARGET_VERSION_MAJOR_MINOR=${RUBY_TARGET_VERSION:0:3}
 # Check current ruby version
 whereis_out=`whereis ruby`
 while read -r line ; do
-	if [[ "$line" ~= "bin" ]] ; then
+	if [[ "$line" =~ "bin" ]] ; then
 		RUBY_INSTALLED=0
 		RUBY_VERSION_FULL=`ruby --version` 
 	fi
@@ -45,14 +46,14 @@ if [[ $RUBY_INSTALLED == 0 ]] ; then
 	RUBY_VERSION=${RUBY_VERSION_FULL:5:5} # 'ruby 2.1.1p76 (2014-02-24 revision 45161) [x86_64-linux]'
 	#					      \   /
 	echo "detected installed ruby version $RUBY_VERSION"
-	vercomp "2.1.1" $RUBY_VERSION
+	vercomp $RUBY_MIN_VERSION $RUBY_VERSION
 	RUBY_VERSION_COMPARE=$?
 else 
 	echo "no installed ruby detected"
 fi
 
 if [[ $RUBY_VERSION_COMPARE == 0 ]] || [[ $RUBY_VERSION_COMPARE == 1 ]] ; then
-	echo "ruby installed $RUBY_VERSION >= required 2.1.1 [OK]"
+	echo "ruby installed $RUBY_VERSION >= required $RUBY_MIN_VERSION [OK]"
 else
 	echo "installing ruby $RUBY_TARGET_VERSION from source [INFO]"
 
@@ -66,22 +67,29 @@ else
 	# Unzip archive
 	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION ]] ; then 
 		echo "unpacking source archive"
+		rm -rf /tmp/ruby-$RUBY_TARGET_VERSION
 		tar xzf ruby-$RUBY_TARGET_VERSION.tar.gz
 	fi
 
 	# Build and install Ruby
-	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION/build_successful ]] ; then 
+	if [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION-build/ ]] || [[ ! -e /tmp/ruby-$RUBY_TARGET_VERSION-build/build_successful ]] ; then 
 
-		# Remove packaged ruby
-		sudo apt-get purge -y ruby1.*
-		sudo apt-get purge -y ruby2.*
+		sudo apt-get install -y ruby
 
-		rmdir -f /tmp/ruby-$RUBY_TARGET_VERSION
-		cd ruby-$RUBY_TARGET_VERSION
-		./configure --disable-install-rdoc
-		make
-		sudo make install
-		sudo touch /tmp/ruby-$RUBY_TARGET_VERSION/build_successful
+		mkdir -p /tmp/ruby-$RUBY_TARGET_VERSION
+		cd /tmp/ruby-$RUBY_TARGET_VERSION
+
+		/tmp/ruby-$RUBY_TARGET_VERSION/configure --disable-install-rdoc
+		
+		make --silent
+		sudo make --silent install
+		if [[ $? == 0 ]] ; then 
+			sudo touch /tmp/ruby-$RUBY_TARGET_VERSION/build_successful
+
+			# Remove packaged ruby
+			sudo apt-get purge -y ruby1.*
+			sudo apt-get purge -y ruby2.*
+		fi
 	fi
 
 	echo "ruby $RUBY_TARGET_VERSION successfully installed"
@@ -91,4 +99,5 @@ fi
 
 echo "`ruby --version`"
 whereis ruby
+
 

@@ -7,11 +7,11 @@ echo "###### 5. GitLab                                  ######"
 echo "########################################################"
 echo
 
-if [[ -n $GITLAB_BRANCH ]] ; then
-	echo "gitlab branch $GITLAB_BRANCH used"
-else
+if [[ ! -n $GITLAB_BRANCH ]] ; then
 	$GITLAB_BRANCH="6-8-stable"
 	echo "default gitlab branch to $GITLAB_BRANCH"	
+else
+	echo "gitlab branch $GITLAB_BRANCH used"
 fi
 
 # We'll install GitLab into home directory of the user "git"
@@ -34,10 +34,6 @@ cd /home/git/gitlab
 
 
 ### CONFIGURATION 
-
-
-# Copy the example GitLab config
-sudo -u git -H cp config/gitlab.yml.example config/gitlab.yml,
 
 # Copy the GitLab config
 if [[ -n $GITLAB_CONFIG_YML_FILE ]] ; then
@@ -63,6 +59,9 @@ sudo chown -R git log/
 sudo chown -R git tmp/
 sudo chmod -R u+rwX log/
 sudo chmod -R u+rwX tmp/
+
+# Create directory for repositories
+sudo -u git -H mkdir -p /home/git/repositories
 
 # Create directory for satellites
 sudo -u git -H mkdir -p /home/git/gitlab-satellites
@@ -141,25 +140,25 @@ cd /home/git/gitlab
 # Or if you use MySQL (note, the option says "without ... postgres")
 sudo -u git -H bundle install --deployment --without development test postgres aws
 
-
-
 ######### Initialize Database and Activate Advanced Features
 
-sudo -u git -H bundle exec rake gitlab:setup RAILS_ENV=production
+cd /home/git/gitlab
+
+yes yes | sudo -u git -H bundle exec rake gitlab:setup RAILS_ENV=production
+echo 
 
 # Type 'yes' to create the database tables.
 
 # When done you see 'Administrator account created:'
 
 
-
 ######### Install Gitlab Shell
 
 if [[ -n $GITLAB_SHELL_TARGET_VERSION ]] ; then
-	echo "gitlab shell target version is $GITLAB_SHELL_TARGET_VERSION"
-else
 	GITLAB_SHELL_TARGET_VERSION="1.9.3"
 	echo "default gitlab shell target version to $GITLAB_SHELL_TARGET_VERSION"	
+else
+	echo "gitlab shell target version is $GITLAB_SHELL_TARGET_VERSION"
 fi
 
 # Go to home directory
@@ -172,7 +171,7 @@ sudo rm -rf gitlab-shell
 cd /home/git/gitlab
 
 # Run the installation task for gitlab-shell (replace `REDIS_URL` if needed):
-sudo -u git -H bundle exec rake gitlab:shell:install[$GITLAB_SHELL_TARGET_VERSION] REDIS_URL=redis://localhost:6379
+sudo -u git -H bundle exec rake gitlab:shell:install[$GITLAB_SHELL_TARGET_VERSION] REDIS_URL=redis://localhost:6379 RAILS_ENV=production
 
 # Copy configs to gitlab-shell folder
 cd /home/git/gitlab-shell
@@ -191,8 +190,10 @@ else
 fi
 
 
+
 ######### Install Init Script
 
+cd /home/git/gitlab
 sudo cp lib/support/init.d/gitlab /etc/init.d/gitlab
 
 sudo update-rc.d gitlab defaults 21

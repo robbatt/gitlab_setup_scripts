@@ -128,7 +128,7 @@ production: &base
   # You can inspect a sample of the LDAP users with login access by running:
   #   bundle exec rake gitlab:ldap:check RAILS_ENV=production
   ldap:
-    enabled: true
+    enabled: false
     host: 'LDAP.MYDOMAIN.ORG'
     port: 389
     uid: 'sAMAccountName'
@@ -157,7 +157,7 @@ production: &base
     #   Format: RFC 4515
     #   Ex. (employeeType=developer)
     #
-    user_filter: '(memberof=CN=GITLABUSERS,CN=Users,DC=MYDOMAIN,DC=ORG)'
+    user_filter: '(&(sAMAccountName=%{username})(memberOf=CN=GITLABUSERS,CN=Users,DC=MYDOMAIN,DC=ORG))'
 
 
   ## OmniAuth settings

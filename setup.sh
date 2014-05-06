@@ -9,6 +9,15 @@ echo
 echo "### developed for https://gitlab.com/gitlab-org/gitlab-ce/commit/85b5d203acbea36224fc7e3c0c6b93cce0141b84 ###"
 echo
 
+# OS Version check
+OS_VERSION=`lsb_release -r`
+if [[ ! $OS_VERSION =~ "12.04" ]] ; then 
+	echo "ERROR: developed for Ubuntu 12.04"
+	exit 1
+fi
+
+STARTTIME=$(date +%s)
+
 # SETTINGS
 export BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -30,7 +39,7 @@ export GITLAB_DB_ROOT_PASS="myRootPass"
 export GITLAB_BRANCH="master"
 
 export GITLAB_SHELL_TARGET_VERSION="1.9.3"
-export GITLAB_SHELL_CONFIG_FILE="$BASEDIR/configs/config.yml.GITLAB_SHELL"
+export GITLAB_SHELL_CONFIG_YML_FILE="$BASEDIR/configs/config.yml.GITLAB_SHELL"
 
 export GITLAB_CONFIG_YML_FILE="$BASEDIR/configs/gitlab.yml.GITLAB"
 export GITLAB_UNICORN_RB_FILE="$BASEDIR/configs/unicorn.rb.GITLAB"
@@ -62,20 +71,15 @@ fi
 
 # SETUP
 cd $BASEDIR/scripts && bash setup_1_dependencies.sh
-#cd $BASEDIR/scripts && bash setup_2_ruby.sh
-
-# using custom nightly snapshot from ruby repo, due to compile error on ubuntu 14.04 (readline.c), fixed in r45772 = ruby-2.1.2p81
-
-### TODO update this later to use the standard versions
-export RUBY_TARGET_REVISION="r45816"
-cd $BASEDIR/scripts && bash setup_2_ruby_snapshot.sh
+cd $BASEDIR/scripts && bash setup_2_ruby.sh
 cd $BASEDIR/scripts && bash setup_3_users.sh
 cd $BASEDIR/scripts && bash setup_4_database.sh
 cd $BASEDIR/scripts && bash setup_5_gitlab.sh
 cd $BASEDIR/scripts && bash setup_6_nginx.sh
 
+ENDTIME=$(date +%s)
 echo
-echo "setup script successful"
+echo "setup script successful ($(($ENDTIME - $STARTTIME)) seconds)"
 echo "navigate to localhost"
 echo
 echo "user: admin"

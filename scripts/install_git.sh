@@ -55,10 +55,10 @@ else
 	wget https://git-core.googlecode.com/files/git-$GIT_TARGET_VERSION.tar.gz
 	tar xzf git-$GIT_TARGET_VERSION.tar.gz
 	cd git-$GIT_TARGET_VERSION/
-	make prefix=/usr/local all
+	make --silent prefix=/usr/local all
 
 	# Install into /usr/local/bin
-	sudo make prefix=/usr/local install
+	sudo make --silent prefix=/usr/local install
 
 	echo "git $GIT_TARGET_VERSION successfully installed"
 fi

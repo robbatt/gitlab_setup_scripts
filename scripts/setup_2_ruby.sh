@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e # stop on first error
 
 source lib_compare_version.sh
 
@@ -18,10 +19,17 @@ fi
 
 RUBY_TARGET_VERSION_MAJOR_MINOR=${RUBY_TARGET_VERSION:0:3}
 
-
 # Check current ruby version
-RUBY_VERSION_FULL=`ruby --version` 
-RUBY_INSTALLED=$?
+whereis_out=`whereis ruby`
+while read -r line ; do
+	if [[ "$line" ~= "bin" ]] ; then
+		RUBY_INSTALLED=0
+		RUBY_VERSION_FULL=`ruby --version` 
+	fi
+done <<< $whereis_out
+
+
+
 
 # check for expected output 'ruby 2.1.1 (2014-02-24 revision 45167) [x86_64-linux]'
 if [[ $RUBY_INSTALLED == 0 ]] ; then

@@ -62,7 +62,13 @@ fi
 
 # SETUP
 cd $BASEDIR/scripts && bash setup_1_dependencies.sh
-cd $BASEDIR/scripts && bash setup_2_ruby.sh
+#cd $BASEDIR/scripts && bash setup_2_ruby.sh
+
+# using custom nightly snapshot from ruby repo, due to compile error on ubuntu 14.04 (readline.c), fixed in r45772 = ruby-2.1.2p81
+
+### TODO update this later to use the standard versions
+export RUBY_TARGET_REVISION="r45816"
+cd $BASEDIR/scripts && bash setup_2_ruby_snapshot.sh
 cd $BASEDIR/scripts && bash setup_3_users.sh
 cd $BASEDIR/scripts && bash setup_4_database.sh
 cd $BASEDIR/scripts && bash setup_5_gitlab.sh

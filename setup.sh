@@ -22,14 +22,8 @@ STARTTIME=$(date +%s)
 export BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Step 1
-export GIT_TARGET_VERSION="1.8.5.2"
-
 export POSTFIX_MAILNAME="my.domain"
 export POSTFIX_MAILERTYPE="'Internet Site'"
-
-# Step 2
-export RUBY_TARGET_VERSION="2.1.1"
-#export RUBY_TARGET_VERSION="2.0.0-p451"
 
 # Step 4
 export GITLAB_DB_PASS="myPass"
@@ -38,9 +32,7 @@ export GITLAB_DB_ROOT_PASS="myRootPass"
 # Step 5
 export GITLAB_BRANCH="master"
 
-export GITLAB_SHELL_TARGET_VERSION="1.9.3"
 export GITLAB_SHELL_CONFIG_YML_FILE="$BASEDIR/configs/config.yml.GITLAB_SHELL"
-
 export GITLAB_CONFIG_YML_FILE="$BASEDIR/configs/gitlab.yml.GITLAB"
 export GITLAB_UNICORN_RB_FILE="$BASEDIR/configs/unicorn.rb.GITLAB"
 export GITLAB_DATABASE_YML_FILE="$BASEDIR/configs/database.yml.GITLAB"
@@ -82,7 +74,7 @@ echo
 echo "setup script successful ($(($ENDTIME - $STARTTIME)) seconds)"
 echo "navigate to localhost"
 echo
-echo "user: admin"
+echo "user: root"
 echo "pass: 5iveL!fe"
 echo
 echo "have fun!"

@@ -7,11 +7,11 @@ echo "###### 5. GitLab                                  ######"
 echo "########################################################"
 echo
 
-if [[ ! -n $GITLAB_BRANCH ]] ; then
+if [[ -n $GITLAB_BRANCH ]] ; then
+	echo "gitlab branch $GITLAB_BRANCH used"
+else
 	$GITLAB_BRANCH="6-8-stable"
 	echo "default gitlab branch to $GITLAB_BRANCH"	
-else
-	echo "gitlab branch $GITLAB_BRANCH used"
 fi
 
 # We'll install GitLab into home directory of the user "git"

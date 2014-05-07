@@ -8,11 +8,11 @@ echo "########################################################"
 echo
 
 
-if [[ ! -n $RUBY_TARGET_REVISION ]] ; then
+if [[ -n $RUBY_TARGET_REVISION ]] ; then
+	echo "ruby target revision is $RUBY_TARGET_REVISION"
+else
 	RUBY_TARGET_REVISION="r45816"
 	echo "default ruby target revision to $RUBY_TARGET_REVISION"	
-else
-	echo "ruby target revision is $RUBY_TARGET_REVISION"
 fi
 
 echo "installing ruby revision $RUBY_TARGET_REVISION from source [INFO]"

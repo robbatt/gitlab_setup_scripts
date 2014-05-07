@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# Make sure Git is version 1.7.10 or higher (we just use 1.8.5.2 or higher)
+# Make sure Git is version 1.7.10 or higher (we just use 1.9.0 or higher)
 
 
 source lib_compare_version.sh
 
 PROGNAME=$(basename $0)
 
-if [[ -n "$GIT_TARGET_VERSION" ]] ; then
-	GIT_TARGET_VERSION="1.8.5.2"
-	echo "default git target version to $GIT_TARGET_VERSION"	
-else
+if [[ -n $GIT_TARGET_VERSION ]] ; then
 	echo "git target version is $GIT_TARGET_VERSION"
+else
+	GIT_TARGET_VERSION="1.9.0"
+	echo "default git target version to $GIT_TARGET_VERSION"	
 fi
 
 # Check current git version
 GIT_VERSION_FULL=`git --version` 
 GIT_INSTALLED=$?
 
-# check for expected output 'git version 1.8.5.2'
+# check for expected output 'git version 1.9.0'
 if [[ $GIT_INSTALLED == 0 ]] ; then
 
 	if [[ ! "$GIT_VERSION_FULL" =~ "git version " ]]
@@ -29,10 +29,10 @@ if [[ $GIT_INSTALLED == 0 ]] ; then
 		exit 1
 	fi
 
-	GIT_VERSION=${GIT_VERSION_FULL:12:10} # 'git version 1.8.5.2'
-	#						     \     /
+	GIT_VERSION=${GIT_VERSION_FULL:12:10} # 'git version 1.9.0'
+	#						     \   /
 	echo "detected installed git version $GIT_VERSION"
-	vercomp "1.8.5.2" $GIT_VERSION
+	vercomp "1.9.0" $GIT_VERSION
 	GIT_VERSION_COMPARE=$?
 else 
 	echo "no installed git detected"
@@ -60,10 +60,14 @@ else
 	# Install into /usr/local/bin
 	sudo make --silent prefix=/usr/local install
 
+	INSTALLED_VERSION=`git --version`
+	if [[ ! "$INSTALLED_VERSION" =~ "$GIT_TARGET_VERSION" ]] ; then
+		echo "git installation failed"
+		exit 1
+	fi
 	echo "git $GIT_TARGET_VERSION successfully installed"
 fi
 
-echo "`git --version`"
+echo `git --version`
 whereis git
-
 

@@ -10,7 +10,7 @@ echo
 if [[ -n $GITLAB_BRANCH ]] ; then
 	echo "gitlab branch $GITLAB_BRANCH used"
 else
-	$GITLAB_BRANCH="6-8-stable"
+	$GITLAB_BRANCH="7-0-stable"
 	echo "default gitlab branch to $GITLAB_BRANCH"	
 fi
 

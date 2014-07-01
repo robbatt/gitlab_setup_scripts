@@ -51,10 +51,10 @@ else
 
 	# Download and compile git from source
 	cd /tmp
-	rm -rf git-$GIT_TARGET_VERSION*
+	rm -rf git-v$GIT_TARGET_VERSION*
 	wget https://github.com/git/git/archive/v$GIT_TARGET_VERSION.tar.gz
-	tar xzf git-$GIT_TARGET_VERSION.tar.gz
-	cd git-$GIT_TARGET_VERSION/
+	tar xzf git-v$GIT_TARGET_VERSION.tar.gz
+	cd git-v$GIT_TARGET_VERSION/
 	make --silent prefix=/usr/local all
 
 	# Install into /usr/local/bin

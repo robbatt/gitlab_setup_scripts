@@ -19,16 +19,9 @@ production: &base
     port: 80
     https: false
 
-    # Uncomment and customize the last line to run in a non-root path
-    # WARNING: We recommend creating a FQDN to host GitLab in a root path instead of this.
-    # Note that four settings need to be changed for this to work.
-    # 1) In your application.rb file: config.relative_url_root = "/gitlab"
-    # 2) In your gitlab.yml file: relative_url_root: /gitlab
-    # 3) In your unicorn.rb: ENV['RAILS_RELATIVE_URL_ROOT'] = "/gitlab"
-    # 4) In ../gitlab-shell/config.yml: gitlab_url: "http://127.0.0.1/gitlab"
-    # To update the path, run: sudo -u git -H bundle exec rake assets:precompile RAILS_ENV=production
-    #
-    # relative_url_root: /gitlab
+    # WARNING: See config/application.rb under "Relative url support" for the list of
+	# other files that need to be changed for relative url support
+	# relative_url_root: /gitlab
 
     # Uncomment and customize if you can't use the default user to run GitLab (default: 'git')
     # user: git
@@ -37,9 +30,8 @@ production: &base
     # Email address used in the "From" field in mails sent by GitLab
     email_from: norepy@MYDOMAIN.ORG
 
-    # Email address of your support contact (default: same as email_from)
-    support_email: support@MYDOMAIN.ORG
-
+    ## Email server smtp settings are in [a separate file](initializers/smtp_settings.rb.sample).
+    
     ## User settings
     default_projects_limit: 10
     # default_can_create_group: false  # default: true
@@ -76,7 +68,6 @@ production: &base
       issues: true
       merge_requests: true
       wiki: true
-      wall: false
       snippets: false
       visibility_level: "private"  # can be "private" | "internal" | "public"
 
@@ -117,8 +108,8 @@ production: &base
   ## Gravatar
   gravatar:
     enabled: true                 # Use user avatar image from Gravatar.com (default: true)
-    # plain_url: "http://..."     # default: http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm
-    # ssl_url:   "https://..."    # default: https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm
+    # plain_url: "http://..."     # default: http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon
+    # ssl_url:   "https://..."    # default: https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon
 
   #
   # 2. Auth settings
